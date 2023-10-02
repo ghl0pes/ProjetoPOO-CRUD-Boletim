@@ -1,0 +1,10 @@
+D:\Github\ProjetoPOO\CRUD-Boletim\bin\Debug\CRUD-Boletim.exe.config
+D:\Github\ProjetoPOO\CRUD-Boletim\bin\Debug\CRUD-Boletim.exe
+D:\Github\ProjetoPOO\CRUD-Boletim\bin\Debug\CRUD-Boletim.pdb
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD-Boletim.csproj.AssemblyReference.cache
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD_Boletim.Form1.resources
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD_Boletim.Properties.Resources.resources
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD-Boletim.csproj.GenerateResource.cache
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD-Boletim.csproj.CoreCompileInputs.cache
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD-Boletim.exe
+D:\Github\ProjetoPOO\CRUD-Boletim\obj\Debug\CRUD-Boletim.pdb
