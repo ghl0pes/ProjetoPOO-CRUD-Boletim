@@ -41,7 +41,7 @@
             this.txtNota2 = new System.Windows.Forms.TextBox();
             this.txtMedia = new System.Windows.Forms.TextBox();
             this.txtSituacao = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbbxDisciplina = new System.Windows.Forms.ComboBox();
             this.btnIncluir = new System.Windows.Forms.Button();
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnAlterar = new System.Windows.Forms.Button();
@@ -161,13 +161,22 @@
             this.txtSituacao.Size = new System.Drawing.Size(164, 20);
             this.txtSituacao.TabIndex = 14;
             // 
-            // comboBox1
+            // cbbxDisciplina
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(118, 61);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(157, 21);
-            this.comboBox1.TabIndex = 16;
+            this.cbbxDisciplina.FormattingEnabled = true;
+            this.cbbxDisciplina.Items.AddRange(new object[] {
+            "Lingua Portuguesa",
+            "Matemática",
+            "Geografia",
+            "Biologia",
+            "Física",
+            "História",
+            "Química",
+            "Filosofia"});
+            this.cbbxDisciplina.Location = new System.Drawing.Point(118, 61);
+            this.cbbxDisciplina.Name = "cbbxDisciplina";
+            this.cbbxDisciplina.Size = new System.Drawing.Size(157, 21);
+            this.cbbxDisciplina.TabIndex = 16;
             // 
             // btnIncluir
             // 
@@ -177,6 +186,7 @@
             this.btnIncluir.TabIndex = 17;
             this.btnIncluir.Text = "Incluir";
             this.btnIncluir.UseVisualStyleBackColor = true;
+            this.btnIncluir.Click += new System.EventHandler(this.btnIncluir_Click);
             // 
             // btnExcluir
             // 
@@ -214,7 +224,7 @@
             this.Controls.Add(this.btnAlterar);
             this.Controls.Add(this.btnExcluir);
             this.Controls.Add(this.btnIncluir);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbbxDisciplina);
             this.Controls.Add(this.txtSituacao);
             this.Controls.Add(this.txtMedia);
             this.Controls.Add(this.txtNota2);
@@ -250,7 +260,7 @@
         private System.Windows.Forms.TextBox txtNota2;
         private System.Windows.Forms.TextBox txtMedia;
         private System.Windows.Forms.TextBox txtSituacao;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbbxDisciplina;
         private System.Windows.Forms.Button btnIncluir;
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnAlterar;

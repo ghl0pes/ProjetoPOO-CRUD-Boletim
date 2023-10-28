@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class Disciplina
+namespace CRUD_Boletim
 {
-	private int id;
-	private string nomeDisciplina;
-
-	public Disciplina()
-	{
-	}
+    internal class Disciplina
+    {
+        private int id;
+        private string nomeDisciplina;
+    }
 }
