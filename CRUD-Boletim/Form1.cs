@@ -119,7 +119,42 @@ namespace CRUD_Boletim
             }
 
             updateAlunoCommand.ExecuteNonQuery();
+        }
 
+        private void deleteNotasDoAluno(int alunoId)
+        {
+            string sqlQueryDeleteNotasAluno = "DELETE FROM dbo.AlunoDisciplina WHERE idAluno = @idAluno";
+            SqlCommand deleteNotasDoAlunoCommand = new SqlCommand();
+
+            deleteNotasDoAlunoCommand.Parameters.Add("@idAluno", SqlDbType.Int).Value = alunoId;
+
+            deleteNotasDoAlunoCommand.Connection = connection;
+            deleteNotasDoAlunoCommand.CommandText = sqlQueryDeleteNotasAluno;
+
+            if (dataReader != null && !dataReader.IsClosed)
+            {
+                dataReader.Close();
+            }
+
+            deleteNotasDoAlunoCommand.ExecuteNonQuery();
+        }
+
+        private void deleteAluno(int alunoId)
+        {
+            string sqlQueryDeleteAluno = "DELETE FROM dbo.ALUNO WHERE idAluno = @idAluno";
+            SqlCommand deleteAlunoCommand = new SqlCommand();
+
+            deleteAlunoCommand.Parameters.Add("@idAluno", SqlDbType.Int).Value = alunoId;
+
+            deleteAlunoCommand.Connection = connection;
+            deleteAlunoCommand.CommandText = sqlQueryDeleteAluno;
+
+            if (dataReader != null && !dataReader.IsClosed)
+            {
+                dataReader.Close();
+            }
+
+            deleteAlunoCommand.ExecuteNonQuery();
         }
 
         private SqlDataReader selectNotasPorAlunoEDisciplina(string RA, int idDisciplina)
@@ -352,6 +387,26 @@ namespace CRUD_Boletim
                     txtSituacao.Text = aluno.getSituacao();
                 }
             }
+
+            connection.Close();
+        }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            connection.Open();
+            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+
+            int alunoId = this.getAlunoId(txtRa.Text);
+
+            this.deleteNotasDoAluno(alunoId);
+            this.deleteAluno(alunoId);
+
+            txtRa.Text = "";
+            txtNome.Text = "";
+            txtNota1.Text = "";
+            txtNota2.Text = "";
+            txtMedia.Text = "";
+            txtSituacao.Text = "";
 
             connection.Close();
         }
