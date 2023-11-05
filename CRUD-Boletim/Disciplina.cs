@@ -10,5 +10,12 @@ namespace CRUD_Boletim
     {
         private int id { get; set; }
         private string nomeDisciplina { get; set; }
+
+        public Disciplina(int id, string nomeDisciplina) { 
+            this.id = id;
+            this.nomeDisciplina = nomeDisciplina;
+        }
+
+        public int getId() { return id; }
     }
 }
