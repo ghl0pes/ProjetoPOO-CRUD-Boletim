@@ -8,13 +8,13 @@ namespace CRUD_Boletim
 {
     internal class Aluno
     {
-        private string RA;
-        private string nome;
-        private double notaP1;
-        private double notaP2;
-        private double situacao;
-        private double media;
-        private Disciplina disciplina;
+        private string RA { get; set; }
+        private string nome { get; set; }
+        private double? notaP1 { get; set; }
+        private double? notaP2 { get; set; }
+        private double? situacao { get; set; }
+        private double? media { get; set; }
+        private Disciplina disciplina { get; set; }
 
         public Aluno(
             string RA, 
@@ -33,6 +33,12 @@ namespace CRUD_Boletim
             this.situacao = situacao;
             this.media = media;
             this.disciplina = disciplina;
+        }
+
+        public Aluno(string RA, string nome)
+        {
+            this.RA = RA;
+            this.nome = nome;
         }
 
     }

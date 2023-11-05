@@ -164,15 +164,6 @@
             // cbbxDisciplina
             // 
             this.cbbxDisciplina.FormattingEnabled = true;
-            this.cbbxDisciplina.Items.AddRange(new object[] {
-            "Lingua Portuguesa",
-            "Matemática",
-            "Geografia",
-            "Biologia",
-            "Física",
-            "História",
-            "Química",
-            "Filosofia"});
             this.cbbxDisciplina.Location = new System.Drawing.Point(118, 61);
             this.cbbxDisciplina.Name = "cbbxDisciplina";
             this.cbbxDisciplina.Size = new System.Drawing.Size(157, 21);

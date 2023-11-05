@@ -8,7 +8,7 @@ namespace CRUD_Boletim
 {
     internal class Disciplina
     {
-        private int id;
-        private string nomeDisciplina;
+        private int id { get; set; }
+        private string nomeDisciplina { get; set; }
     }
 }
