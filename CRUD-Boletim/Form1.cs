@@ -77,7 +77,7 @@ namespace CRUD_Boletim
             return selectRaCommand.ExecuteReader();
         }
 
-        private Aluno insertAluno (string RA, string nome)
+        private void insertAluno (string RA, string nome)
         {
             string sqlQueryInsertAluno = "" +
                 "INSERT INTO dbo.ALUNO (RA, nomeAluno)" +
@@ -97,7 +97,29 @@ namespace CRUD_Boletim
 
             insertAlunoCommand.ExecuteNonQuery();
 
-            return new Aluno(RA, nome);
+        }
+
+        private void updateAluno(string RA, string nome)
+        {
+            string sqlQueryUpdateAluno = "" +
+                "UPDATE dbo.ALUNO " +
+                "SET nomeAluno = @nomeAluno " +
+                "WHERE RA = @RA";
+            SqlCommand updateAlunoCommand = new SqlCommand();
+
+            updateAlunoCommand.Parameters.Add("@RA", SqlDbType.VarChar).Value = RA;
+            updateAlunoCommand.Parameters.Add("@nomeAluno", SqlDbType.VarChar).Value = nome;
+
+            updateAlunoCommand.Connection = connection;
+            updateAlunoCommand.CommandText = sqlQueryUpdateAluno;
+
+            if (dataReader != null && !dataReader.IsClosed)
+            {
+                dataReader.Close();
+            }
+
+            updateAlunoCommand.ExecuteNonQuery();
+
         }
 
         private SqlDataReader selectNotasPorAlunoEDisciplina(string RA, int idDisciplina)
@@ -229,7 +251,42 @@ namespace CRUD_Boletim
         private void btnIncluir_Click(object sender, EventArgs e)
         {
             connection.Open();
-            Aluno aluno = new Aluno(txtRa.Text, txtNome.Text);
+            Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
+            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+
+            dataReader = this.selectAluno(aluno.getRA());
+
+            if (!dataReader.HasRows)
+            {
+                if (!dataReader.IsClosed) { dataReader.Close(); }
+                this.insertAluno(txtRa.Text, txtNome.Text);
+            }
+
+            if (txtNota1.Text != "")
+            {
+                aluno.setNota1(double.Parse(txtNota1.Text));
+                aluno.setNota2(double.Parse(txtNota2.Text));
+
+                double media = aluno.getNotaP2() > 0
+                        ? (aluno.getNotaP1() + aluno.getNotaP2()) / 2
+                        : aluno.getNotaP1();
+                string situacao = media >= 5 ? "Aprovado" : "Reprovado";
+
+                aluno.setMedia(media);
+                aluno.setSituacao(situacao);
+
+                txtMedia.Text = media.ToString();
+                txtSituacao.Text = situacao;
+                this.upsertNotas(aluno);
+            }
+
+            connection.Close();
+        }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            connection.Open();
+            Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
             if (txtRa.Text == "") MessageBox.Show("Insira um RA");
 
             dataReader = this.selectAluno(txtRa.Text);
@@ -237,7 +294,11 @@ namespace CRUD_Boletim
             if (!dataReader.HasRows)
             {
                 if (!dataReader.IsClosed) { dataReader.Close(); }
-                this.insertAluno(txtRa.Text, txtNome.Text);
+                MessageBox.Show("Aluno não cadastrado. Insira o aluno antes de atualizá-lo!");
+            }
+            else
+            {
+                this.updateAluno(aluno.getRA(), aluno.getNome());
             }
 
 
@@ -253,12 +314,43 @@ namespace CRUD_Boletim
 
                 aluno.setMedia(media);
                 aluno.setSituacao(situacao);
-                aluno.setDisciplina((int)cbbxDisciplina.SelectedValue, "SelectedValue");                
-
-                this.upsertNotas(aluno);
 
                 txtMedia.Text = media.ToString();
                 txtSituacao.Text = situacao;
+                this.upsertNotas(aluno);
+            }
+
+            connection.Close();
+        }
+
+        private void btnPesquisar_Click(object sender, EventArgs e)
+        {
+            connection.Open();
+            Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
+            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+
+            dataReader = this.selectNotasPorAlunoEDisciplina(
+                aluno.getRA(),
+                aluno.getDisciplinaId()
+               );
+
+            if (!dataReader.HasRows)
+            {
+                if (!dataReader.IsClosed) { dataReader.Close(); }
+                MessageBox.Show("Nnehuma nota registrada para esse aluno na disciplina escolhida.");
+            } else {
+                while (dataReader.Read())
+                {
+                    aluno.setNota1(double.Parse(dataReader["notaP1"].ToString()));
+                    aluno.setNota2(double.Parse(dataReader["notaP2"].ToString()));
+                    aluno.setMedia(double.Parse(dataReader["media"].ToString()));
+                    aluno.setSituacao(dataReader["situacao"].ToString());
+
+                    txtNota1.Text = aluno.getNotaP1().ToString();
+                    txtNota2.Text = aluno.getNotaP2().ToString();
+                    txtMedia.Text = aluno.getMedia().ToString();
+                    txtSituacao.Text = aluno.getSituacao();
+                }
             }
 
             connection.Close();

@@ -151,6 +151,7 @@
             // 
             this.txtMedia.Location = new System.Drawing.Point(90, 139);
             this.txtMedia.Name = "txtMedia";
+            this.txtMedia.ReadOnly = true;
             this.txtMedia.Size = new System.Drawing.Size(185, 20);
             this.txtMedia.TabIndex = 13;
             // 
@@ -158,6 +159,7 @@
             // 
             this.txtSituacao.Location = new System.Drawing.Point(111, 165);
             this.txtSituacao.Name = "txtSituacao";
+            this.txtSituacao.ReadOnly = true;
             this.txtSituacao.Size = new System.Drawing.Size(164, 20);
             this.txtSituacao.TabIndex = 14;
             // 
@@ -196,6 +198,7 @@
             this.btnAlterar.TabIndex = 19;
             this.btnAlterar.Text = "Alterar";
             this.btnAlterar.UseVisualStyleBackColor = true;
+            this.btnAlterar.Click += new System.EventHandler(this.btnAlterar_Click);
             // 
             // btnPesquisar
             // 
@@ -205,6 +208,7 @@
             this.btnPesquisar.TabIndex = 20;
             this.btnPesquisar.Text = "Pesquisar";
             this.btnPesquisar.UseVisualStyleBackColor = true;
+            this.btnPesquisar.Click += new System.EventHandler(this.btnPesquisar_Click);
             // 
             // Form1
             // 

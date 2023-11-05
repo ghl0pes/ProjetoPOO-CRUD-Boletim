@@ -8,7 +8,6 @@ namespace CRUD_Boletim
 {
     internal class Aluno
     {
-        private int id;
         private string RA { get; set; }
         private string nome { get; set; }
         private double notaP1 { get; set; }
@@ -17,16 +16,21 @@ namespace CRUD_Boletim
         private double media { get; set; }
         private Disciplina disciplina { get; set; }
 
-        public Aluno(string RA, string nome)
+        public Aluno(string RA, string nome, int disciplinaId, string nomeDisciplina)
         {
             this.RA = RA;
             this.nome = nome;
+            this.disciplina = new Disciplina(disciplinaId, nomeDisciplina);
         }
 
         public string getRA()
         {
             return this.RA;
         }
+        public string getNome()
+        {
+            return this.nome;
+        }        
 
         public double getNotaP1()
         {
@@ -70,7 +74,7 @@ namespace CRUD_Boletim
 
         public void setDisciplina(int id, string nome)
         {
-            this.disciplina = new Disciplina(id, nome);
+           
         }
 
         public void setSituacao(string situacao)
