@@ -1,2 +1,3 @@
 ./CRUD-Boletim/bin,
 ./CRUD-Boletim/packages
+.env

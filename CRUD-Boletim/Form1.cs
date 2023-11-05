@@ -19,8 +19,7 @@ namespace CRUD_Boletim
             InitializeComponent();
             this.preencheComboboxDisciplinas();
         }
-
-        SqlConnection connection = new SqlConnection(@"Data Source=GHL0PES; integrated security=SSPI;initial catalog=Projeto_Boletim");
+        SqlConnection connection = new SqlConnection(@"Data Source=" + EnvFileReader.GetEnv("DB_HOST") + "; integrated security=SSPI;initial catalog=Projeto_Boletim");
         SqlCommand command = new SqlCommand();
         SqlDataReader dataReader;
 
