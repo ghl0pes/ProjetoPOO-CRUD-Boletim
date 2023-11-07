@@ -46,6 +46,7 @@
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnAlterar = new System.Windows.Forms.Button();
             this.btnPesquisar = new System.Windows.Forms.Button();
+            this.btnLimpar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblRa
@@ -123,36 +124,38 @@
             // 
             this.txtRa.Location = new System.Drawing.Point(56, 11);
             this.txtRa.Name = "txtRa";
-            this.txtRa.Size = new System.Drawing.Size(219, 20);
+            this.txtRa.Size = new System.Drawing.Size(287, 20);
             this.txtRa.TabIndex = 9;
             // 
             // txtNome
             // 
             this.txtNome.Location = new System.Drawing.Point(82, 35);
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(193, 20);
+            this.txtNome.Size = new System.Drawing.Size(261, 20);
             this.txtNome.TabIndex = 10;
             // 
             // txtNota1
             // 
             this.txtNota1.Location = new System.Drawing.Point(90, 88);
             this.txtNota1.Name = "txtNota1";
-            this.txtNota1.Size = new System.Drawing.Size(185, 20);
+            this.txtNota1.Size = new System.Drawing.Size(253, 20);
             this.txtNota1.TabIndex = 11;
+            this.txtNota1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNota1_KeyPress);
             // 
             // txtNota2
             // 
             this.txtNota2.Location = new System.Drawing.Point(90, 113);
             this.txtNota2.Name = "txtNota2";
-            this.txtNota2.Size = new System.Drawing.Size(185, 20);
+            this.txtNota2.Size = new System.Drawing.Size(253, 20);
             this.txtNota2.TabIndex = 12;
+            this.txtNota2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNota2_KeyPress);
             // 
             // txtMedia
             // 
             this.txtMedia.Location = new System.Drawing.Point(90, 139);
             this.txtMedia.Name = "txtMedia";
             this.txtMedia.ReadOnly = true;
-            this.txtMedia.Size = new System.Drawing.Size(185, 20);
+            this.txtMedia.Size = new System.Drawing.Size(253, 20);
             this.txtMedia.TabIndex = 13;
             // 
             // txtSituacao
@@ -160,7 +163,7 @@
             this.txtSituacao.Location = new System.Drawing.Point(111, 165);
             this.txtSituacao.Name = "txtSituacao";
             this.txtSituacao.ReadOnly = true;
-            this.txtSituacao.Size = new System.Drawing.Size(164, 20);
+            this.txtSituacao.Size = new System.Drawing.Size(232, 20);
             this.txtSituacao.TabIndex = 14;
             // 
             // cbbxDisciplina
@@ -168,7 +171,7 @@
             this.cbbxDisciplina.FormattingEnabled = true;
             this.cbbxDisciplina.Location = new System.Drawing.Point(118, 61);
             this.cbbxDisciplina.Name = "cbbxDisciplina";
-            this.cbbxDisciplina.Size = new System.Drawing.Size(157, 21);
+            this.cbbxDisciplina.Size = new System.Drawing.Size(225, 21);
             this.cbbxDisciplina.TabIndex = 16;
             // 
             // btnIncluir
@@ -211,11 +214,22 @@
             this.btnPesquisar.UseVisualStyleBackColor = true;
             this.btnPesquisar.Click += new System.EventHandler(this.btnPesquisar_Click);
             // 
+            // btnLimpar
+            // 
+            this.btnLimpar.Location = new System.Drawing.Point(281, 195);
+            this.btnLimpar.Name = "btnLimpar";
+            this.btnLimpar.Size = new System.Drawing.Size(62, 23);
+            this.btnLimpar.TabIndex = 21;
+            this.btnLimpar.Text = "Limpar";
+            this.btnLimpar.UseVisualStyleBackColor = true;
+            this.btnLimpar.Click += new System.EventHandler(this.btnLimpar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 230);
+            this.ClientSize = new System.Drawing.Size(355, 230);
+            this.Controls.Add(this.btnLimpar);
             this.Controls.Add(this.btnPesquisar);
             this.Controls.Add(this.btnAlterar);
             this.Controls.Add(this.btnExcluir);
@@ -261,6 +275,7 @@
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnAlterar;
         private System.Windows.Forms.Button btnPesquisar;
+        private System.Windows.Forms.Button btnLimpar;
     }
 }
 

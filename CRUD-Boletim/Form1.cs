@@ -19,6 +19,7 @@ namespace CRUD_Boletim
             InitializeComponent();
             this.preencheComboboxDisciplinas();
         }
+        
         SqlConnection connection = new SqlConnection(@"Data Source=" + EnvFileReader.GetEnv("DB_HOST") + "; integrated security=SSPI;initial catalog=Projeto_Boletim");
         SqlCommand command = new SqlCommand();
         SqlDataReader dataReader;
@@ -33,6 +34,7 @@ namespace CRUD_Boletim
             cbbxDisciplina.DisplayMember = "nomeDisciplina";
             cbbxDisciplina.ValueMember = "idDisciplina";
             cbbxDisciplina.DataSource = dt;
+            cbbxDisciplina.SelectedIndex = -1;
 
             connection.Close();
         }
@@ -282,11 +284,71 @@ namespace CRUD_Boletim
             }
         }
 
+        private Boolean camposValidos ()
+        {
+            if ((txtNota1.Text != "" && txtNota2.Text == "") || (txtNota1.Text == "" && txtNota2.Text != ""))
+            {
+                if (txtNota1.Text == "")
+                {
+                    MessageBox.Show("Preencha o Campo nota 1!");
+                    return false;
+                }
+
+                if (txtNota2.Text == "")
+                {
+                    MessageBox.Show("Preencha o Campo nota 2!");
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private Boolean notasValidas ()
+        {
+            if (txtNota1.Text == "" && txtNota2.Text == "")
+                return true;
+
+            double nota1 = double.Parse(txtNota1.Text);
+            double nota2 = double.Parse(txtNota2.Text);
+
+            if (nota1 < 0 || nota1 > 10)
+            {
+                MessageBox.Show("Insira a nota 1 maior do que 0 e menor do que 10!");
+                return false;
+            }
+            if (nota2 < 0 || nota2 > 10)
+            {
+                MessageBox.Show("Insira a nota 2 maior do que 0 e menor do que 10!");
+                return false;
+            }
+
+            return true;
+        }
+
+        private Boolean camposObrigatoriosPreenchidos ()
+        {
+            if (txtRa.Text == "")
+            {
+                MessageBox.Show("Preencha RA. Campo é obrigatório!");
+                return false;
+            }
+            if (txtNome.Text == "")
+            {
+                MessageBox.Show("Preencha o nome do aluno. Campo é obrigatório");
+                return false;
+            }
+            return true;
+        }
+
         private void btnIncluir_Click(object sender, EventArgs e)
         {
             connection.Open();
+            if (!this.camposObrigatoriosPreenchidos())
+            {
+                connection.Close();
+                return;
+            }
             Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
-            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
 
             dataReader = this.selectAluno(aluno.getRA());
 
@@ -294,6 +356,12 @@ namespace CRUD_Boletim
             {
                 if (!dataReader.IsClosed) { dataReader.Close(); }
                 this.insertAluno(txtRa.Text, txtNome.Text);
+            }
+
+            if (!this.camposValidos() || !this.notasValidas())
+            {
+                connection.Close();
+                return;
             }
 
             if (txtNota1.Text != "")
@@ -314,6 +382,8 @@ namespace CRUD_Boletim
                 this.upsertNotas(aluno);
             }
 
+            MessageBox.Show("Aluno inserido com sucesso!", "Inserido!");
+
             connection.Close();
         }
 
@@ -321,7 +391,11 @@ namespace CRUD_Boletim
         {
             connection.Open();
             Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
-            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+            if (!this.camposObrigatoriosPreenchidos())
+            {
+                connection.Close();
+                return;
+            }
 
             dataReader = this.selectAluno(txtRa.Text);
 
@@ -335,6 +409,12 @@ namespace CRUD_Boletim
                 this.updateAluno(aluno.getRA(), aluno.getNome());
             }
 
+            if (!this.camposValidos() || !this.notasValidas())
+            {
+                connection.Close();
+                return;
+            }
+
 
             if (txtNota1.Text != "")
             {
@@ -354,6 +434,8 @@ namespace CRUD_Boletim
                 this.upsertNotas(aluno);
             }
 
+            MessageBox.Show("Aluno alterado com sucesso!", "Alterado!");
+
             connection.Close();
         }
 
@@ -361,7 +443,23 @@ namespace CRUD_Boletim
         {
             connection.Open();
             Aluno aluno = new Aluno(txtRa.Text, txtNome.Text, (int)cbbxDisciplina.SelectedValue, cbbxDisciplina.GetItemText(cbbxDisciplina.SelectedItem));
-            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+            if (!this.camposObrigatoriosPreenchidos())
+            {
+                connection.Close();
+                return;
+            }
+
+            dataReader = this.selectAluno(txtRa.Text);
+
+            if (!dataReader.HasRows)
+            {
+                if (!dataReader.IsClosed) { dataReader.Close(); }
+                MessageBox.Show("Aluno não cadastrado! Insira para buscar mais informações", "Falha na busca");
+            }
+            else
+            {
+                this.updateAluno(aluno.getRA(), aluno.getNome());
+            }
 
             dataReader = this.selectNotasPorAlunoEDisciplina(
                 aluno.getRA(),
@@ -371,7 +469,7 @@ namespace CRUD_Boletim
             if (!dataReader.HasRows)
             {
                 if (!dataReader.IsClosed) { dataReader.Close(); }
-                MessageBox.Show("Nnehuma nota registrada para esse aluno na disciplina escolhida.");
+                MessageBox.Show("Nenhuma nota registrada para esse aluno na disciplina escolhida.", "Falha na busca");
             } else {
                 while (dataReader.Read())
                 {
@@ -387,27 +485,80 @@ namespace CRUD_Boletim
                 }
             }
 
+            MessageBox.Show("Pesquisa realizada com sucesso!", "Sucesso na pesquisa");
+
             connection.Close();
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
             connection.Open();
-            if (txtRa.Text == "") MessageBox.Show("Insira um RA");
+            if (!this.camposObrigatoriosPreenchidos())
+            {
+                connection.Close();
+                return;
+            }
 
             int alunoId = this.getAlunoId(txtRa.Text);
 
-            this.deleteNotasDoAluno(alunoId);
-            this.deleteAluno(alunoId);
+            if (DialogResult.Yes == MessageBox.Show("Tem certeza que deseja apagar o registro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                this.deleteNotasDoAluno(alunoId);
+                this.deleteAluno(alunoId);
 
-            txtRa.Text = "";
-            txtNome.Text = "";
-            txtNota1.Text = "";
-            txtNota2.Text = "";
-            txtMedia.Text = "";
-            txtSituacao.Text = "";
+                txtRa.Text = "";
+                txtNome.Text = "";
+                txtNota1.Text = "";
+                txtNota2.Text = "";
+                txtMedia.Text = "";
+                txtSituacao.Text = "";
+                MessageBox.Show("Aluno removido com sucesso!", "Sucesso na remoção!");
+            }          
 
             connection.Close();
+        }
+
+        private void txtNota1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // If you want, you can allow decimal (float) numbers
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtNota2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Verify that the pressed key isn't CTRL or any non-numeric digit
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            // If you want, you can allow decimal (float) numbers
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            if (DialogResult.Yes == MessageBox.Show("Deseja limpar todos os campos?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            {
+                txtRa.Text = "";
+                txtNome.Text = "";
+                txtNota1.Text = "";
+                txtNota2.Text = "";
+                txtMedia.Text = "";
+                txtSituacao.Text = "";
+            }
         }
     }
 }
